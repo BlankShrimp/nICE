@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">nICE</string>
+
+    <string name="title_activity_main">nICE</string>
+    <string name="title_activity_login">Login to nICE</string>
+
+    <string name="bottom_navigation_module_settings">Module Settings</string>
+    <string name="bottom_navigation_logs">Logs</string>
+    <string name="bottom_navigation_global_settings">Global Settings</string>
 </resources>
