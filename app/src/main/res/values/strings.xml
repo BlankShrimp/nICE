@@ -7,4 +7,9 @@
     <string name="bottom_navigation_module_settings">Module Settings</string>
     <string name="bottom_navigation_logs">Logs</string>
     <string name="bottom_navigation_global_settings">Global Settings</string>
+
+    <string name="label_login_greeting">Welcome to use nICE!</string>
+    <string name="label_login_name_hint">l.vader82</string>
+    <string name="label_login_pssw_hint">TheDarkSideRules</string>
+    <string name="button_login">Login!</string>
 </resources>
