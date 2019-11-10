@@ -33,7 +33,8 @@ This will display a list of what the app has done. Each item in the list will be
 - '11.11 00:05' -  'Bought everything in my Taobao cart'
 
 ### Global Settings
-This will allow one to pick which modules to consider. So all the continuous support / unknown departments bullshit will be filtered out
+This will allow one to pick which modules to consider. So all the continuous support / unknown departments bullshit will be filtered out.
+It will also show the user's image, name and student ID on top
 
 # Data Models
 The user's authentication credentials / tokens will be stored as SharedPreferences.
