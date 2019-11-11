@@ -1,5 +1,6 @@
 package com.armpits.nice.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -31,6 +32,8 @@ public class LoginActivity extends AppCompatActivity {
                 SharedPreferencesManager.set(Const.SP_PASSWORD, password, LoginActivity.this);
                 SharedPreferencesManager.set(Const.SP_LOGGED_IN,
                         Const.SP_LOGGED_IN_TRUE, LoginActivity.this);
+
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
             }
         });
     }
