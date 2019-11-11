@@ -1,16 +1,16 @@
-package com.armpits.nice.ui.dashboard;
+package com.armpits.nice.fragments.module_settings;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class DashboardViewModel extends ViewModel {
+public class ModuleSettingsViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public DashboardViewModel() {
+    public ModuleSettingsViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is dashboard fragment");
+        mText.setValue("Can change global settings and see your ugly face here");
     }
 
     public LiveData<String> getText() {

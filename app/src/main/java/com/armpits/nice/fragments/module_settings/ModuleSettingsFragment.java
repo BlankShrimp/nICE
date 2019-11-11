@@ -1,4 +1,4 @@
-package com.armpits.nice.ui.notifications;
+package com.armpits.nice.fragments.module_settings;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.armpits.nice.R;
 
-public class NotificationsFragment extends Fragment {
+public class ModuleSettingsFragment extends Fragment {
 
-    private NotificationsViewModel notificationsViewModel;
+    private ModuleSettingsViewModel moduleSettingsViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        notificationsViewModel =
-                ViewModelProviders.of(this).get(NotificationsViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_global_settings, container, false);
-        final TextView textView = root.findViewById(R.id.text_notifications);
-        notificationsViewModel.getText().observe(this, new Observer<String>() {
+        moduleSettingsViewModel =
+                ViewModelProviders.of(this).get(ModuleSettingsViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_module_settings, container, false);
+        final TextView textView = root.findViewById(R.id.text_home);
+        moduleSettingsViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

@@ -4,16 +4,14 @@
     <string name="title_activity_main">nICE</string>
     <string name="title_activity_login">Login to nICE</string>
 
+    <!-- BOTTOM NAVIGATION -->
     <string name="bottom_navigation_module_settings">Module Settings</string>
     <string name="bottom_navigation_logs">Logs</string>
     <string name="bottom_navigation_global_settings">Global Settings</string>
 
+    <!-- LOGIN -->
     <string name="label_login_greeting">Welcome to use nICE!</string>
     <string name="label_login_name_hint">l.vader82</string>
     <string name="label_login_pssw_hint">TheDarkSideRules</string>
     <string name="button_login">Login!</string>
-    <string name="title_activity_main2">Main2Activity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
 </resources>

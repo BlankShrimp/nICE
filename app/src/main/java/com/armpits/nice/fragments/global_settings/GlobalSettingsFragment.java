@@ -1,4 +1,4 @@
-package com.armpits.nice.ui.home;
+package com.armpits.nice.fragments.global_settings;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.armpits.nice.R;
 
-public class HomeFragment extends Fragment {
+public class GlobalSettingsFragment extends Fragment {
 
-    private HomeViewModel homeViewModel;
+    private GlobalSettingsViewModel globalSettingsViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_module_settings, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(this, new Observer<String>() {
+        globalSettingsViewModel =
+                ViewModelProviders.of(this).get(GlobalSettingsViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_global_settings, container, false);
+        final TextView textView = root.findViewById(R.id.text_notifications);
+        globalSettingsViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

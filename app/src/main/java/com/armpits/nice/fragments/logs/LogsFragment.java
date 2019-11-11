@@ -1,4 +1,4 @@
-package com.armpits.nice.ui.dashboard;
+package com.armpits.nice.fragments.logs;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,17 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.armpits.nice.R;
 
-public class DashboardFragment extends Fragment {
+public class LogsFragment extends Fragment {
 
-    private DashboardViewModel dashboardViewModel;
+    private LogsViewModel logsViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
-                ViewModelProviders.of(this).get(DashboardViewModel.class);
+        logsViewModel =
+                ViewModelProviders.of(this).get(LogsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_logs, container, false);
         final TextView textView = root.findViewById(R.id.text_dashboard);
-        dashboardViewModel.getText().observe(this, new Observer<String>() {
+        logsViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

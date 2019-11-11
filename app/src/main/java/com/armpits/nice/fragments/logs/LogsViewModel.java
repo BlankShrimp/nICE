@@ -1,16 +1,16 @@
-package com.armpits.nice.ui.notifications;
+package com.armpits.nice.fragments.logs;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class NotificationsViewModel extends ViewModel {
+public class LogsViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public NotificationsViewModel() {
+    public LogsViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is notifications fragment");
+        mText.setValue("Logs are raining like cats and dogs!");
     }
 
     public LiveData<String> getText() {
