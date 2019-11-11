@@ -50,13 +50,13 @@ Represents a module with all its settings and content.
 - files list
 - events list
 
-### File
+### Material
 Represents a single file. It needs some infos to manage the downloads well
 - filename
 - parent path
 - download date
 
-### Event
+### Deadline
 Represents a deadline (is there anything else it can represent?)
 - date / date+time
 - added to calendar (Y/N)
