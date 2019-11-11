@@ -14,4 +14,9 @@
     <string name="label_login_name_hint">l.vader82</string>
     <string name="label_login_pssw_hint">TheDarkSideRules</string>
     <string name="button_login">Login!</string>
+
+    <!-- MODULE SETTINGS -->
+    <string name="modules_download_materials">Download materials</string>
+    <string name="modules_get_notifications">Get notified of new content</string>
+    <string name="modules_add_to_calendar">Add DDLs to calendar</string>
 </resources>
