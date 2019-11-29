@@ -12,7 +12,7 @@ import okhttp3.Response;
 
 public class Networking {
 
-    private OkHttpClient client;
+    public OkHttpClient client;
 
     public Networking() {
         client = new TrustedClient().createTrustedClient();

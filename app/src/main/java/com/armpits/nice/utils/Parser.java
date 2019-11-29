@@ -2,6 +2,8 @@ package com.armpits.nice.utils;
 
 import java.util.ArrayList;
 
+import okhttp3.OkHttpClient;
+
 public class Parser {
 
     public static String[] login(String account, String passwd) {
@@ -45,5 +47,12 @@ public class Parser {
             }
         }
         return result;
+    }
+
+    public static OkHttpClient getClient(String account, String passwd) {
+        Networking networkingHandler = new Networking();
+        String token = networkingHandler.fetchToken();
+        networkingHandler.login(token, account, passwd);
+        return networkingHandler.client;
     }
 }
