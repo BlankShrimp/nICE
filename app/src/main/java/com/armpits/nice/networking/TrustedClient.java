@@ -1,4 +1,4 @@
-package com.armpits.nice.utils;
+package com.armpits.nice.networking;
 
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;

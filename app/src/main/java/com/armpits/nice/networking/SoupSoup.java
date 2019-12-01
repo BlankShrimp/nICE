@@ -1,4 +1,4 @@
-package com.armpits.nice.utils;
+package com.armpits.nice.networking;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
