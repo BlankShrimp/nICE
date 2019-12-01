@@ -23,7 +23,7 @@ public class Networking {
      * @return
      */
     public String fetchToken() {
-        String loginToken = null;
+        String loginToken = "";
         Request request = new Request.Builder().url("https://ice.xjtlu.edu.cn/login/index.php").build();
         try {
             Response response = client.newCall(request).execute();
@@ -44,7 +44,7 @@ public class Networking {
      * @return String[2]{Status, session key}
      */
     public String[] login(String token, String account, String passwd) {
-        String body = null;
+        String body = "";
         try {
             //first connection - verification
             RequestBody formBody = new FormBody.Builder()
