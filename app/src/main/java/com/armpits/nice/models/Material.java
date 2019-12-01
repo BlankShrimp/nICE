@@ -1,17 +1,17 @@
 package com.armpits.nice.models;
 
-import androidx.room.ColumnInfo;
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 
 import java.util.Date;
 
-@Entity
+@Entity(primaryKeys = {"moduleCode", "filename", "parentPath"})
 public class Material {
-    @ColumnInfo(name = "module_code") public final String moduleCode;
-    @ColumnInfo(name = "filename") public final String filename;
-    @ColumnInfo(name = "parent_path") public final String parentPath;
-    @ColumnInfo(name = "date_downloaded") public final Date dateDownloaded;
-    @ColumnInfo(name = "should_download") public final boolean shouldDownload;
+    @NonNull public final String moduleCode;
+    @NonNull public final String filename;
+    @NonNull public final String parentPath;
+    public final Date dateDownloaded;
+    public final boolean shouldDownload;
 
     public Material( String moduleCode, String filename, String parentPath, Date dateDownloaded, boolean shouldDownload) {
         this.moduleCode = moduleCode;

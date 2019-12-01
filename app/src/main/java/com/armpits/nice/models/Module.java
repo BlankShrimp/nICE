@@ -1,21 +1,26 @@
 package com.armpits.nice.models;
 
-import androidx.room.ColumnInfo;
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
 import java.util.Date;
 import java.util.List;
 
 @Entity
 public class Module {
-    @ColumnInfo(name = "title") public final String title;
-    @ColumnInfo(name = "code") public final String code;
-    @ColumnInfo(name = "last_update") public final Date lastUpdate;
-    @ColumnInfo(name = "enable_notifications") public final boolean enableNotifications;
-    @ColumnInfo(name = "enable_downloads") public final boolean enableDownloads;
-    @ColumnInfo(name = "add_ddls_to_calendar") public final boolean addDDLsToCalendar;
+    @PrimaryKey @NonNull
+    public final String code;
+    public final String title;
+    public final Date lastUpdate;
+    public final boolean enableNotifications;
+    public final boolean enableDownloads;
+    public final boolean addDDLsToCalendar;
 
+    @Ignore
     public final List<Material> materials;
+    @Ignore
     public final List<Deadline> deadlines;
 
     public Module(String title, String code, Date lastUpdate,

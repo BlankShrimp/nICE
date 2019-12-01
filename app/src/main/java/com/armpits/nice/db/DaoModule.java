@@ -13,13 +13,13 @@ public interface DaoModule {
     @Query("SELECT * FROM module")
     List<Module> getAll();
 
-    @Query("SELECT * FROM module WHERE enable_downloads")
+    @Query("SELECT * FROM module WHERE enableDownloads")
     List<Module> getToDownload();
 
-    @Query("SELECT * FROM module WHERE enable_notifications")
+    @Query("SELECT * FROM module WHERE enableNotifications")
     List<Module> getToNotify();
 
-    @Query("SELECT * FROM module WHERE add_ddls_to_calendar")
+    @Query("SELECT * FROM module WHERE addDDLsToCalendar")
     List<Module> getToAddToCalendar();
 
     @Insert

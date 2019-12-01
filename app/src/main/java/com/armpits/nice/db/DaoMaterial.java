@@ -13,7 +13,7 @@ public interface DaoMaterial {
     @Query("SELECT * FROM material")
     List<Material> getAll();
 
-    @Query("SELECT * FROM material WHERE module_code = :moduleCode")
+    @Query("SELECT * FROM material WHERE moduleCode = :moduleCode")
     List<Material> getByModuleCode(String moduleCode);
 
     @Insert

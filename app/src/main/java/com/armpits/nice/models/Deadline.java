@@ -1,16 +1,16 @@
 package com.armpits.nice.models;
 
-import androidx.room.ColumnInfo;
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 
 import java.util.Date;
 
-@Entity
+@Entity(primaryKeys = {"moduleCode", "date"})
 public class Deadline {
-    @ColumnInfo(name = "module_code") public String moduleCode;
-    @ColumnInfo(name = "date") public Date date;
-    @ColumnInfo(name = "date_added") public Date dateAddedToCalendar;
-    @ColumnInfo(name = "should_notify") public boolean shouldNotify;
+    @NonNull public String moduleCode;
+    @NonNull public Date date;
+    public Date dateAddedToCalendar;
+    public boolean shouldNotify;
 
     public Deadline(String moduleCode, Date date, Date dateAddedToCalendar, boolean shouldNotify) {
         this.moduleCode = moduleCode;
