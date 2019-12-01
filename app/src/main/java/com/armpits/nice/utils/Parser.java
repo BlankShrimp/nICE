@@ -4,6 +4,11 @@ import java.util.ArrayList;
 
 import okhttp3.OkHttpClient;
 
+/**
+ * To download a file, use getFileList first to get the link, then call getClient to get the session.
+ * For example, in Normal OKHttp, we use "OkHttpClient client = new OkHttpClient();" to init a session,
+ *  but here you have to call "OkHttpClient client = Parser.getClient" to get the session.  
+ */
 public class Parser {
 
     /**
@@ -73,7 +78,6 @@ public class Parser {
         }
         return result;
     }
-
 
     /**
      * Get client object
