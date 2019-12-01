@@ -4,14 +4,32 @@ import java.util.ArrayList;
 
 import okhttp3.OkHttpClient;
 
+/**
+ * To download a file, use getFileList first to get the link, then call getClient to get the session.
+ * For example, in Normal OKHttp, we use "OkHttpClient client = new OkHttpClient();" to init a session,
+ *  but here you have to call "OkHttpClient client = Parser.getClient" to get the session.  
+ */
 public class Parser {
 
+    /**
+     * Login in
+     * If login failed, the status will be "Failed" and session key will be empty, Otherwise status will be "Succeed"
+     * @param account account
+     * @param passwd password
+     * @return String[2]{Status, session key}
+     */
     public static String[] login(String account, String passwd) {
         Networking networkingHandler = new Networking();
         String token = networkingHandler.fetchToken();
         return networkingHandler.login(token, account, passwd);
     }
 
+    /**
+     * Produce courses list
+     * @param account account
+     * @param passwd password
+     * @return A list of String[Course name, unique id of course]
+     */
     public static ArrayList<String[]> getCoursesList(String account, String passwd) {
         Networking networkingHandler = new Networking();
         String token = networkingHandler.fetchToken();
@@ -19,6 +37,12 @@ public class Parser {
         return networkingHandler.getCourses(sesskey);
     }
 
+    /**
+     * Produce due list
+     * @param account account
+     * @param passwd password
+     * @return A list of String[Title, submission link, due date]
+     */
     public static ArrayList<String[]> getDueList(String id, String account, String passwd) {
         ArrayList<String[]> result = new ArrayList<>();
         Networking networkingHandler = new Networking();
@@ -34,6 +58,12 @@ public class Parser {
         return result;
     }
 
+    /**
+     * Produce file list
+     * @param account account
+     * @param passwd password
+     * @return A list of String[file title, links, description]
+     */
     public static ArrayList<String[]> getFileList(String id, String account, String passwd) {
         ArrayList<String[]> result = new ArrayList<>();
         Networking networkingHandler = new Networking();
@@ -49,6 +79,12 @@ public class Parser {
         return result;
     }
 
+    /**
+     * Get client object
+     * @param account account
+     * @param passwd password
+     * @return Client object
+     */
     public static OkHttpClient getClient(String account, String passwd) {
         Networking networkingHandler = new Networking();
         String token = networkingHandler.fetchToken();
