@@ -1,5 +1,6 @@
 package com.armpits.nice.db;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -11,10 +12,10 @@ import com.armpits.nice.models.Deadline;
 @Dao
 public interface DaoDeadline {
     @Query("SELECT * FROM deadline")
-    List<Deadline> getAll();
+    LiveData<List<Deadline>> getAll();
 
     @Query("SELECT * FROM deadline WHERE date >= datetime()")
-    List<Deadline> getUpcoming();
+    LiveData<List<Deadline>> getUpcoming();
 
     @Insert
     void insertAll(Deadline... deadlines);
