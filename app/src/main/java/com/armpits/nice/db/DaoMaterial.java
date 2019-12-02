@@ -5,6 +5,8 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
+
 import java.util.List;
 
 import com.armpits.nice.models.Material;
@@ -19,6 +21,9 @@ public interface DaoMaterial {
 
     @Insert
     void insertAll(Material... materials);
+
+    @Update
+    void update(Material... materials);
 
     @Delete
     void delete(Material material);

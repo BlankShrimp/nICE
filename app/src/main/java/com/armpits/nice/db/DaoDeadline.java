@@ -5,6 +5,8 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
+
 import java.util.List;
 
 import com.armpits.nice.models.Deadline;
@@ -19,6 +21,9 @@ public interface DaoDeadline {
 
     @Insert
     void insertAll(Deadline... deadlines);
+
+    @Update
+    void update(Deadline... deadlines);
 
     @Delete
     void delete(Deadline deadline);
