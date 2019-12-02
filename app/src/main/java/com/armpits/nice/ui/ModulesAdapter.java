@@ -6,13 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.RecyclerView;
+import java.util.List;
 
 import com.armpits.nice.R;
+import com.armpits.nice.db.NiceDatabase;
 import com.armpits.nice.models.Module;
 
-import java.util.List;
 
 public class ModulesAdapter extends RecyclerView.Adapter<ModulesAdapter.MyViewHolder> {
     private Context mContext;
@@ -24,7 +24,7 @@ public class ModulesAdapter extends RecyclerView.Adapter<ModulesAdapter.MyViewHo
 
         public MyViewHolder(View view) {
             super(view);
-            txtTitle           = view.findViewById(R.id.lblTitle);
+            txtTitle        = view.findViewById(R.id.lblTitle);
             chkDownload     = view.findViewById(R.id.chkDownload);
             chkNotifications= view.findViewById(R.id.chkNotifications);
             chkCalendar     = view.findViewById(R.id.chkCalendar);
@@ -58,6 +58,27 @@ public class ModulesAdapter extends RecyclerView.Adapter<ModulesAdapter.MyViewHo
         holder.chkCalendar.setChecked(module.addDDLsToCalendar);
         holder.chkDownload.setChecked(module.enableDownloads);
         holder.chkNotifications.setChecked(module.enableNotifications);
+
+        holder.chkDownload.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (!buttonView.isPressed()) return;
+            holder.chkDownload.setChecked(isChecked);
+            module.enableDownloads = isChecked;
+            NiceDatabase.update(module);
+        });
+
+        holder.chkCalendar.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (!buttonView.isPressed()) return;
+            holder.chkCalendar.setChecked(isChecked);
+            module.addDDLsToCalendar = isChecked;
+            NiceDatabase.update(module);
+        });
+
+        holder.chkNotifications.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (!buttonView.isPressed()) return;
+            holder.chkNotifications.setChecked(isChecked);
+            module.enableNotifications = isChecked;
+            NiceDatabase.update(module);
+        });
     }
 
     @Override
