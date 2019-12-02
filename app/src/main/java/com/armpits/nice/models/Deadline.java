@@ -7,7 +7,7 @@ import java.util.Date;
 
 @Entity(primaryKeys = {"moduleCode", "date"})
 public class Deadline {
-    @NonNull public String moduleCode;
+    @NonNull public final String moduleCode;
     @NonNull public Date date;
     public Date dateAddedToCalendar;
     public boolean shouldNotify;

@@ -13,10 +13,10 @@ public class Module {
     @PrimaryKey @NonNull
     public final String code;
     public final String title;
-    public final Date lastUpdate;
-    public final boolean enableNotifications;
-    public final boolean enableDownloads;
-    public final boolean addDDLsToCalendar;
+    public Date lastUpdate;
+    public boolean enableNotifications;
+    public boolean enableDownloads;
+    public boolean addDDLsToCalendar;
 
     @Ignore
     public final List<Material> materials;
@@ -40,5 +40,11 @@ public class Module {
                   boolean enableNotifications, boolean addDDLsToCalendar, boolean enableDownloads) {
         this (title, code, lastUpdate, enableNotifications, addDDLsToCalendar, enableDownloads,
                 null, null);
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return code +":"+ enableDownloads;
     }
 }
