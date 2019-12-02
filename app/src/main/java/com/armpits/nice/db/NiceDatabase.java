@@ -1,11 +1,13 @@
 package com.armpits.nice.db;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.armpits.nice.models.Deadline;
 import com.armpits.nice.models.Material;
 import com.armpits.nice.models.Module;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
@@ -43,17 +45,29 @@ public abstract class NiceDatabase extends RoomDatabase {
     public static List<Material> getAllMaterials() {
         return INSTANCE.materialDao().getAll().getValue();
     }
-    public static List<Module> getAllModules() {
-        return INSTANCE.moduleDao().getAll().getValue();
+    public static LiveData<List<Module>> getAllModules() {
+        return INSTANCE.moduleDao().getAll();
     }
 
-    public static void insert(Deadline deadline) {
-        dbWriter.execute(() -> INSTANCE.deadlineDao().insertAll(deadline));
+    public static void insert(Deadline... deadlines) {
+        dbWriter.execute(() -> INSTANCE.deadlineDao().insertAll(deadlines));
     }
-    public static void insert(Material material) {
-        dbWriter.execute(() -> INSTANCE.materialDao().insertAll(material));
+    public static void insert(Material... materials) {
+        dbWriter.execute(() -> INSTANCE.materialDao().insertAll(materials));
     }
-    public static void insert(Module module) {
-        dbWriter.execute(() -> INSTANCE.moduleDao().insertAll(module));
+    public static void insert(Module... modules) {
+        dbWriter.execute(() -> INSTANCE.moduleDao().insertAll(modules));
+        Log.d("DB", "Inserting modules " + modules.toString());
+    }
+
+    public static void update(Deadline... deadlines) {
+        dbWriter.execute(() -> INSTANCE.deadlineDao().insertAll(deadlines));
+    }
+    public static void update(Material... materials) {
+        dbWriter.execute(() -> INSTANCE.materialDao().insertAll(materials));
+    }
+    public static void update(Module... modules) {
+        dbWriter.execute(() -> INSTANCE.moduleDao().update(modules));
+        Log.d("DB", "Updating module " + modules);
     }
 }
