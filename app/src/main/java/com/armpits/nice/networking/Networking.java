@@ -59,12 +59,14 @@ public class Networking {
             Response firstResponse = client.newCall(firstRequest).execute();
 
 
-            //second connection - jump to 13748
-            if (!firstResponse.body().string().contains("https://ice.xjtlu.edu.cn/login/index.php?testsession=13748")) {
+            //second connection - jump to re-direct page
+            String firstResBody = firstResponse.body().string();
+            System.out.println(firstResBody);
+            if (!firstResBody.contains("https://ice.xjtlu.edu.cn/login/index.php?testsession=")) {
                 return new String[]{"Failed", "Wrong passwd maybe"};
             }
             Request secondRequest = new Request.Builder()
-                    .url("https://ice.xjtlu.edu.cn/login/index.php?testsession=13748")
+                    .url(firstResBody.split("<a href=\"")[1].split("\"")[0])
                     .build();
             Response secondResponse = client.newCall(secondRequest).execute();
 
