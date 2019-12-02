@@ -10,8 +10,8 @@ public class Material {
     @NonNull public final String moduleCode;
     @NonNull public final String filename;
     @NonNull public final String parentPath;
-    public final Date dateDownloaded;
-    public final boolean shouldDownload;
+    public Date dateDownloaded;
+    public boolean shouldDownload;
 
     public Material( String moduleCode, String filename, String parentPath, Date dateDownloaded, boolean shouldDownload) {
         this.moduleCode = moduleCode;

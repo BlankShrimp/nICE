@@ -1,6 +1,7 @@
 package com.armpits.nice.fragments.module_settings;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,67 +9,76 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.armpits.nice.R;
+import com.armpits.nice.db.NiceDatabase;
 import com.armpits.nice.models.Module;
+import com.armpits.nice.networking.Parser;
 import com.armpits.nice.ui.ModulesAdapter;
+import com.armpits.nice.utils.Const;
+import com.armpits.nice.utils.SharedPreferencesManager;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class ModuleSettingsFragment extends Fragment {
-
-    private ModuleSettingsViewModel moduleSettingsViewModel;
+    private View mContainer;
     private RecyclerView recyclerView;
     private ModulesAdapter adapter;
+    private LiveData<List<Module>> modulesLiveData;
     private List<Module> modules;
+
+    private String username;
+    private String password;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        moduleSettingsViewModel =
-                ViewModelProviders.of(this).get(ModuleSettingsViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_module_settings, container, false);
-        moduleSettingsViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-//                textView.setText(s);
-            }
-        });
+        mContainer = inflater.inflate(R.layout.fragment_module_settings, container, false);
+        recyclerView = mContainer.findViewById(R.id.recycler_view);
 
-        recyclerView = root.findViewById(R.id.recycler_view);
-        modules = generateSampleModules();
-        adapter = new ModulesAdapter(root.getContext(), modules);
+        modulesLiveData = NiceDatabase.getAllModules();
+        modules = new ArrayList<>(); // keep it empty for now, load data on view created
+        adapter = new ModulesAdapter(mContainer.getContext(), modules);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(root.getContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContainer.getContext()));
         recyclerView.setAdapter(adapter);
 
-        return root;
+        modulesLiveData.observe(this, updatedModules -> {
+            // cannot just reassign, otherwise the adapter will lose the point
+            Log.d("FRAG", "new modules: " + updatedModules);
+            modules.clear();
+            modules.addAll(updatedModules);
+            adapter.notifyDataSetChanged();
+        });
+
+        return mContainer;
     }
 
-    private List<Module> generateSampleModules() {
-        List<Module> modules = new ArrayList<>(5);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        modules.add(new Module(
-                "Machine Learning", "CSE315", new Date(),
-                true, false, true));
-        modules.add(new Module(
-                "Big Data Analytics", "CSE313", new Date(),
-                false, false, true));
-        modules.add(new Module(
-                "Mobile Computing", "CSE311", new Date(),
-                true, true, false));
-        modules.add(new Module(
-                "English for Academic Purposes", "EAP121", new Date(),
-                true, false, true));
-        modules.add(new Module(
-                "Math Will Kill Me", "MTH101", new Date(),
-                true, true, true));
+        username = SharedPreferencesManager.get(Const.SP_USERNAME, mContainer.getContext());
+        password = SharedPreferencesManager.get(Const.SP_PASSWORD, mContainer.getContext());
 
-        return modules;
+        // if the DB is empty, download modules from ICE and save to DB
+        if (modules.isEmpty())
+            new Thread(() -> {
+                List<String[]> onlineModules = Parser.getCoursesList(username, password);
+
+                for (String[] moduleInfo : onlineModules)
+                    modules.add(new Module(moduleInfo[0], moduleInfo[1], new Date(),
+                            false, false, false));
+
+                Log.d("FRAG", "Downloaded new modules :" + modules);
+
+                // update the database
+                NiceDatabase.insert(modules.toArray(new Module[]{}));
+                getActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
+            }).start();
     }
 }
