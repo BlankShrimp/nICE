@@ -31,6 +31,7 @@ import androidx.navigation.ui.NavigationUI;
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
+        // insert your download here
         // instantiate the database
         NiceDatabase db = NiceDatabase.getDatabase(this);
     }
