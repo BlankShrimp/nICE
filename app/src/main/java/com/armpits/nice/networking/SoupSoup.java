@@ -39,24 +39,32 @@ public class SoupSoup {
     public static ArrayList<String[]> parseLinks(String input) {
         ArrayList<String[]> result = new ArrayList<>();
         Document doc = Jsoup.parse(input);
-        Elements elements = doc.select("div.activityinstance");
-        for (Element e: elements) {
-            String[] assembled = new String[4];
-            Element element1 = e.selectFirst("a");
-            if (!element1.attr("onclick").isEmpty() &&
-                    e.selectFirst("span.resourcelinkdetails") != null) {
-                assembled[0] = "File";
-                assembled[2] = element1.attr("onclick").split("'")[1];
-                assembled[3] = e.selectFirst("span.resourcelinkdetails").text().split("Modified ")[0];
-            } else if (element1
-                    .selectFirst("img[src=https://ice.xjtlu.edu.cn/theme/image.php/boost_campus/assign/1574237233/icon]")
-                    != null){
-                assembled[0] = "Submission";
-                assembled[2] = element1.attr("href");
-            } else
-                continue;
-            assembled[1] = element1.selectFirst("span.instancename").text();
-            result.add(assembled);
+        int count = 0;
+        Elements modules = doc.select("#section-" + count);
+        while (!modules.isEmpty()) {
+            Elements elements = modules.select("div.activityinstance");
+            String parent = modules.select("span.sectionname").text();
+            for (Element e : elements) {
+                String[] assembled = new String[5];
+                Element element1 = e.selectFirst("a");
+                if (!element1.attr("onclick").isEmpty() &&
+                        e.selectFirst("span.resourcelinkdetails") != null) {
+                    assembled[0] = "File";
+                    assembled[2] = element1.attr("onclick").split("'")[1];
+                    assembled[3] = e.selectFirst("span.resourcelinkdetails").text().split("Modified ")[0];
+                    assembled[4] = parent;
+                } else if (element1
+                        .selectFirst("img[src=https://ice.xjtlu.edu.cn/theme/image.php/boost_campus/assign/1574237233/icon]")
+                        != null) {
+                    assembled[0] = "Submission";
+                    assembled[2] = element1.attr("href");
+                } else
+                    continue;
+                assembled[1] = element1.selectFirst("span.instancename").text();
+                result.add(assembled);
+            }
+            count++;
+            modules = doc.select("#section-" + count);
         }
         return result;
     }
