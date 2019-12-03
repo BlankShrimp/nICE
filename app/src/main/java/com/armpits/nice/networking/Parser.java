@@ -111,7 +111,7 @@ public class Parser {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                // leave here to Chris and Thomas
+                // leave here to Chris
             }
 
             @Override
@@ -120,7 +120,8 @@ public class Parser {
                 byte[] bytes = new byte[2048];
                 int len = 0;
                 FileOutputStream outputStream = null;
-
+                // fill the code here using MediaStore, store all the file in Downloads dir
+                // Media type should be Media.Downloads
 
             }
         });
