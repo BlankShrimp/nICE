@@ -1,8 +1,20 @@
 package com.armpits.nice.networking;
 
+import android.content.Intent;
+import android.os.Environment;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * To download a file, use getFileList first to get the link, then call getClient to get the session.
@@ -90,5 +102,28 @@ public class Parser {
         String token = networkingHandler.fetchToken();
         networkingHandler.login(token, account, passwd);
         return networkingHandler.client;
+    }
+
+    public static boolean downloadFile(String path, String fileName, String url,
+                                       OkHttpClient client, String account, String passwd) {
+        Request request = new Request.Builder()
+                .url(url).build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                // leave here to Chris and Thomas
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                InputStream stream = null;
+                byte[] bytes = new byte[2048];
+                int len = 0;
+                FileOutputStream outputStream = null;
+
+
+            }
+        });
+        return true;
     }
 }
