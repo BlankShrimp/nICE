@@ -74,7 +74,7 @@ public class Parser {
      * Produce file list
      * @param account account
      * @param passwd password
-     * @return A list of String[file title, links, description]
+     * @return A list of String[file title, links, description, parent]
      */
     public static ArrayList<String[]> getFileList(String id, String account, String passwd) {
         ArrayList<String[]> result = new ArrayList<>();
@@ -85,7 +85,7 @@ public class Parser {
         for (String[] item: linksList) {
             if (item[0].equals("File")) {
                 String[] newItem = networkingHandler.parseRealFileLink(item);
-                result.add(new String[]{item[1], newItem[2], item[3]});
+                result.add(new String[]{item[1], newItem[2], item[3], item[4]});
             }
         }
         return result;
