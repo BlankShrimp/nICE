@@ -74,11 +74,9 @@ public class ModulesAdapter extends RecyclerView.Adapter<ModulesAdapter.MyViewHo
                     != PackageManager.PERMISSION_GRANTED) {
                 if(ActivityCompat.shouldShowRequestPermissionRationale((Activity) mContext,Manifest.permission.WRITE_EXTERNAL_STORAGE)){
                     new AlertDialog.Builder(mContext)
-                            .setTitle("Request WRITE_EXTERNAL_STORAGE")
-                            .setMessage("WRITE_EXTERNAL_STORAGE is required with this feature. If you confirm not" +
-                                    " to grant this permission, you can still use this app but cannot " +
-                                    "download files automatically until you grant this permission manually. ")
-                            .setPositiveButton("Confirm", (dialog, which) ->
+                            .setTitle(R.string.title_file)
+                            .setMessage(R.string.description_file)
+                            .setPositiveButton(R.string.confirm_button, (dialog, which) ->
                                     ActivityCompat.requestPermissions((Activity) mContext,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1))
                             .show();
                 }else{
@@ -98,11 +96,9 @@ public class ModulesAdapter extends RecyclerView.Adapter<ModulesAdapter.MyViewHo
                     != PackageManager.PERMISSION_GRANTED) {
                 if(ActivityCompat.shouldShowRequestPermissionRationale((Activity) mContext,Manifest.permission.WRITE_CALENDAR)){
                     new AlertDialog.Builder(mContext)
-                            .setTitle("Request WRITE_CALENDAR")
-                            .setMessage("WRITE_CALENDAR is required with this feature. If you confirm not" +
-                                    " to grant this permission, you can still use this app but cannot " +
-                                    "add DDL to calendar until you grant this permission manually. ")
-                            .setPositiveButton("Confirm", (dialog, which) ->
+                            .setTitle(R.string.title_calendar)
+                            .setMessage(R.string.description_calendar)
+                            .setPositiveButton(R.string.confirm_button, (dialog, which) ->
                                     ActivityCompat.requestPermissions((Activity) mContext,new String[]{Manifest.permission.WRITE_CALENDAR}, 1))
                             .show();
                 }else{
