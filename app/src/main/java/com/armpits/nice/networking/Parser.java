@@ -1,20 +1,8 @@
 package com.armpits.nice.networking;
 
-import android.content.Intent;
-import android.os.Environment;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * To download a file, use getFileList first to get the link, then call getClient to get the session.
@@ -104,27 +92,42 @@ public class Parser {
         return networkingHandler.client;
     }
 
-    public static boolean downloadFile(String path, String fileName, String url,
-                                       OkHttpClient client, String account, String passwd) {
-        Request request = new Request.Builder()
-                .url(url).build();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                // leave here to Chris
-            }
-
-            @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                InputStream stream = null;
-                byte[] bytes = new byte[2048];
-                int len = 0;
-                FileOutputStream outputStream = null;
-                // fill the code here using MediaStore, store all the file in Downloads dir
-                // Media type should be Media.Downloads
-
-            }
-        });
-        return true;
+    /**
+     * Download file into /Documents/nICE/module/parent/file.name.
+     * Sample is down below.
+     * @param module Module title.
+     * @param parent Parent title.
+     * @param url URL.
+     * @param account account.
+     * @param passwd password.
+     * @param listener OnDownloadListener.
+     */
+    public static void download(String module, String parent, String url, String account,
+                                String passwd, Networking.OnDownloadListener listener) {
+        Networking networkingHandler = new Networking();
+        String token = networkingHandler.fetchToken();
+        networkingHandler.login(token, account, passwd);
+        networkingHandler.download(module, parent, url, listener);
     }
+
+    //new Thread(() -> {
+    //    Parser.download("CSE305", "Presentation",
+    //            "https://ice.xjtlu.edu.cn/pluginfile.php/8714/mod_resource/content/3/Designspec%20report%20-%20sample%203.pdf",
+    //            "ACC.OUNT16", "PASSWORD", new Networking.OnDownloadListener() {
+    //                @Override
+    //                public void onDownloadSuccess() {
+    //                    System.out.println("finished");
+    //                }
+    //
+    //                @Override
+    //                public void onDownloading(int progress) {
+    //                    System.out.println(progress);
+    //                }
+    //
+    //                @Override
+    //                public void onDownloadFailed() {
+    //                    System.out.println("FAILED");
+    //                }
+    //            });
+    //}).start();
 }
