@@ -1,12 +1,6 @@
 package com.armpits.nice.db;
 
 import android.content.Context;
-import android.util.Log;
-
-import com.armpits.nice.models.Deadline;
-import com.armpits.nice.models.Material;
-import com.armpits.nice.models.Module;
-
 import androidx.lifecycle.LiveData;
 import androidx.room.Database;
 import androidx.room.Room;
@@ -17,13 +11,19 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Deadline.class, Module.class, Material.class}, version = 1, exportSchema = false)
+import com.armpits.nice.models.Deadline;
+import com.armpits.nice.models.Log;
+import com.armpits.nice.models.Material;
+import com.armpits.nice.models.Module;
+
+@Database(entities = {Deadline.class, Module.class, Material.class, Log.class}, version = 1, exportSchema = false)
 @TypeConverters({DateConverter.class})
 
 public abstract class NiceDatabase extends RoomDatabase {
     public abstract DaoDeadline deadlineDao();
     public abstract DaoModule   moduleDao();
     public abstract DaoMaterial materialDao();
+    public abstract DaoLog logDao();
 
     private static volatile NiceDatabase INSTANCE;
     private static final int N_THREADS = 4;
@@ -48,6 +48,9 @@ public abstract class NiceDatabase extends RoomDatabase {
     public static LiveData<List<Module>> getAllModules() {
         return INSTANCE.moduleDao().getAll();
     }
+    public static LiveData<List<Log>> getAllLogs() {
+        return INSTANCE.logDao().getAll();
+    }
 
     public static void insert(Deadline... deadlines) {
         dbWriter.execute(() -> INSTANCE.deadlineDao().insertAll(deadlines));
@@ -57,7 +60,9 @@ public abstract class NiceDatabase extends RoomDatabase {
     }
     public static void insert(Module... modules) {
         dbWriter.execute(() -> INSTANCE.moduleDao().insertAll(modules));
-        Log.d("DB", "Inserting modules " + modules.toString());
+    }
+    public static void insert(Log... logs) {
+        dbWriter.execute(() -> INSTANCE.logDao().insertAll(logs));
     }
 
     public static void update(Deadline... deadlines) {
@@ -68,6 +73,5 @@ public abstract class NiceDatabase extends RoomDatabase {
     }
     public static void update(Module... modules) {
         dbWriter.execute(() -> INSTANCE.moduleDao().update(modules));
-        Log.d("DB", "Updating module " + modules);
     }
 }
