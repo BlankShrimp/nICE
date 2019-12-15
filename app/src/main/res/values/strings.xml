@@ -34,4 +34,6 @@
         to grant this permission, you can still use this app but cannot
         add DDL to calendar until you grant this permission manually.
     </string>
+    <string name="profile_description">Profile image received from ICE</string>
+    <string name="button_logout">Logout</string>
 </resources>
