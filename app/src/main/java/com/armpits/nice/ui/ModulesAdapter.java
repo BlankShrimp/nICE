@@ -82,11 +82,10 @@ public class ModulesAdapter extends RecyclerView.Adapter<ModulesAdapter.MyViewHo
                 }else{
                     ActivityCompat.requestPermissions((Activity) mContext,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
                 }
-            } else {
-                holder.chkDownload.setChecked(isChecked);
-                module.enableDownloads = isChecked;
-                NiceDatabase.update(module);
             }
+            holder.chkDownload.setChecked(isChecked);
+            module.enableDownloads = isChecked;
+            NiceDatabase.update(module);
         });
 
         holder.chkCalendar.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -104,11 +103,10 @@ public class ModulesAdapter extends RecyclerView.Adapter<ModulesAdapter.MyViewHo
                 }else{
                     ActivityCompat.requestPermissions((Activity) mContext,new String[]{Manifest.permission.WRITE_CALENDAR},1);
                 }
-            } else {
-                holder.chkCalendar.setChecked(isChecked);
-                module.addDDLsToCalendar = isChecked;
-                NiceDatabase.update(module);
             }
+            holder.chkCalendar.setChecked(isChecked);
+            module.addDDLsToCalendar = isChecked;
+            NiceDatabase.update(module);
         });
 
         holder.chkNotifications.setOnCheckedChangeListener((buttonView, isChecked) -> {
