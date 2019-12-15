@@ -38,7 +38,7 @@ public class ModuleSettingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         mContainer = inflater.inflate(R.layout.fragment_module_settings, container, false);
-        recyclerView = mContainer.findViewById(R.id.recycler_view);
+        recyclerView = mContainer.findViewById(R.id.recycler_view_modules);
 
         modulesLiveData = NiceDatabase.getAllModules();
         modules = new ArrayList<>(); // keep it empty for now, load data on view created
@@ -66,19 +66,21 @@ public class ModuleSettingsFragment extends Fragment {
         password = SharedPreferencesManager.get(Const.SP_PASSWORD, mContainer.getContext());
 
         // if the DB is empty, download modules from ICE and save to DB
-        if (modules.isEmpty())
-            new Thread(() -> {
+        new Thread(() -> {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if (modules.isEmpty()) {
+                Log.d("MODULES EMPTY", new Date().toString());
                 List<String[]> onlineModules = Parser.getCoursesList(username, password);
 
                 for (String[] moduleInfo : onlineModules)
-                    modules.add(new Module(moduleInfo[0], moduleInfo[1], new Date(),
+                    NiceDatabase.insert(new Module(moduleInfo[0], moduleInfo[1], new Date(),
                             false, false, false));
-
-                Log.d("FRAG", "Downloaded new modules :" + modules);
-
-                // update the database
-                NiceDatabase.insert(modules.toArray(new Module[]{}));
-                getActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
-            }).start();
+            }
+        }).start();
     }
 }
