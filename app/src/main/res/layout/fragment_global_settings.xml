@@ -61,24 +61,18 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtLastUpdate" />
+        app:layout_constraintTop_toBottomOf="@+id/txtLastUpdate"
+        android:text="@string/auto_update_message"/>
 
     <Spinner
         android:id="@+id/spinUpdateFrequency"
-        android:layout_width="104dp"
-        android:layout_height="38dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         app:layout_constraintBottom_toBottomOf="@+id/txtAutoUpdate"
         app:layout_constraintStart_toEndOf="@+id/txtAutoUpdate"
-        app:layout_constraintTop_toTopOf="@+id/txtAutoUpdate" />
-
-    <RadioGroup
-        android:id="@+id/grpModules"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtAutoUpdate" />
+        app:layout_constraintTop_toTopOf="@+id/txtAutoUpdate"
+        android:drawSelectorOnTop="true"
+        android:entries="@array/update_frequencies" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
