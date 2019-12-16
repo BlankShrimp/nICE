@@ -17,6 +17,7 @@ public class Module {
     public boolean enableNotifications;
     public boolean enableDownloads;
     public boolean addDDLsToCalendar;
+    public boolean showInList;
 
     @Ignore
     public final List<Material> materials;
@@ -25,7 +26,7 @@ public class Module {
 
     public Module(String title, String code, Date lastUpdate,
                   boolean enableNotifications, boolean addDDLsToCalendar, boolean enableDownloads,
-                  List<Material> materials, List<Deadline> deadlines) {
+                  boolean showInList, List<Material> materials, List<Deadline> deadlines) {
         this.title = title;
         this.code = code;
         this.lastUpdate = lastUpdate;
@@ -34,12 +35,13 @@ public class Module {
         this.addDDLsToCalendar = addDDLsToCalendar;
         this.materials = materials;
         this.deadlines = deadlines;
+        this.showInList = showInList;
     }
 
-    public Module(String title, String code, Date lastUpdate,
-                  boolean enableNotifications, boolean addDDLsToCalendar, boolean enableDownloads) {
+    public Module(String title, String code, Date lastUpdate, boolean enableNotifications,
+                  boolean addDDLsToCalendar, boolean enableDownloads, boolean showInList) {
         this (title, code, lastUpdate, enableNotifications, addDDLsToCalendar, enableDownloads,
-                null, null);
+                showInList, null, null);
     }
 
     @NonNull
