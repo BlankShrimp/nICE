@@ -36,4 +36,5 @@
     </string>
     <string name="profile_description">Profile image received from ICE</string>
     <string name="button_logout">Logout</string>
+    <string name="auto_update_message">Auto update every</string>
 </resources>
