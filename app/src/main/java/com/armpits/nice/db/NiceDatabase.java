@@ -39,11 +39,11 @@ public abstract class NiceDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    public static List<Deadline> getAllDeadlines() {
-        return INSTANCE.deadlineDao().getAll().getValue();
+    public static LiveData<List<Deadline>> getAllDeadlines() {
+        return INSTANCE.deadlineDao().getAll();
     }
-    public static List<Material> getAllMaterials() {
-        return INSTANCE.materialDao().getAll().getValue();
+    public static LiveData<List<Material>> getAllMaterials() {
+        return INSTANCE.materialDao().getAll();
     }
     public static LiveData<List<Module>> getAllModules() {
         return INSTANCE.moduleDao().getAll();

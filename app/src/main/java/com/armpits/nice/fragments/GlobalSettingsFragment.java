@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.armpits.nice.R;
 import com.armpits.nice.models.Module;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GlobalSettingsFragment extends Fragment {
@@ -22,6 +23,7 @@ public class GlobalSettingsFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_global_settings, container, false);
 
+        modules = new ArrayList<>();
         viewModel = ViewModelProviders.of(this).get(FragmentsViewModel.class);
         viewModel.modules.observe(this, newModules -> {
             modules.clear();
