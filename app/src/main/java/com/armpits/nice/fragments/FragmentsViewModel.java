@@ -12,11 +12,11 @@ import java.util.List;
 
 
 public class FragmentsViewModel extends ViewModel {
-    public LiveData<List<Module>> modules;
+    LiveData<List<Module>> modules;
     LiveData<List<Deadline>> deadlines;
     LiveData<List<Log>> logs;
 
-    FragmentsViewModel() {
+    public FragmentsViewModel() {
         modules = NiceDatabase.getAllModules();
         deadlines = NiceDatabase.getAllDeadlines();
         logs = NiceDatabase.getAllLogs();
