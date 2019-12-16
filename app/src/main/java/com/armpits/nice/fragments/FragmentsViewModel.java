@@ -21,18 +21,4 @@ public class FragmentsViewModel extends ViewModel {
         deadlines = NiceDatabase.getAllDeadlines();
         logs = NiceDatabase.getAllLogs();
     }
-
-//    private MediatorLiveData<List<Log>> logsMediator = new MediatorLiveData<>();
-//    private LiveData<List<Log>> logsLiveData;
-//    public Observable<List<Log>> logsList;
-//
-//    public FragmentsViewModel() {
-//        logsMediator.addSource(logsLiveData, logsList -> logsMediator.setValue(logsList));
-//    }
-//
-//    public void startLoading(LifecycleOwner owner) {
-//        logsMediator.observe(owner, logsList -> {
-//            logsList.set(logsList)
-//        });
-//    }
 }
