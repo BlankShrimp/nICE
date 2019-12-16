@@ -79,7 +79,7 @@ public class ModuleSettingsFragment extends Fragment {
 
                 for (String[] moduleInfo : onlineModules)
                     NiceDatabase.insert(new Module(moduleInfo[0], moduleInfo[1], new Date(),
-                            false, false, false));
+                            false, false, false, false));
             }
         }).start();
     }
