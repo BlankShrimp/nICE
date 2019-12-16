@@ -1,4 +1,4 @@
-package com.armpits.nice.fragments.module_settings;
+package com.armpits.nice.fragments;
 
 import android.os.Bundle;
 import android.util.Log;
