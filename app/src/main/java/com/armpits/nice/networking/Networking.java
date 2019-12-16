@@ -174,7 +174,7 @@ public class Networking {
         return result;
     }
 
-    public void download(String module, String parent, String url, OnDownloadListener listener) {
+    public void download(String module, String parent, String fileName, String url, OnDownloadListener listener) {
         Request request = new Request.Builder().url(url).build();
         client.newCall(request).enqueue(new Callback() {
             @Override
@@ -191,7 +191,7 @@ public class Networking {
                 try {
                     is = response.body().byteStream();
                     long total = response.body().contentLength();
-                    File file = new File(savePath, getNameFromUrl(URLDecoder.decode(url, "UTF-8")));
+                    File file = new File(savePath, fileName);
                     fos = new FileOutputStream(file);
                     long sum = 0;
                     while ((len = is.read(buf)) != -1) {
