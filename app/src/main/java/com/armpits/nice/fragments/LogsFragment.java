@@ -1,4 +1,4 @@
-package com.armpits.nice.fragments.logs;
+package com.armpits.nice.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,9 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.armpits.nice.R;
 import com.armpits.nice.db.NiceDatabase;
 import com.armpits.nice.models.Log;
-import com.armpits.nice.models.Module;
 import com.armpits.nice.ui.LogsAdapter;
-import com.armpits.nice.ui.ModulesAdapter;
 
 import java.util.ArrayList;
 import java.util.Date;

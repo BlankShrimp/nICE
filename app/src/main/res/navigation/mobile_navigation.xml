@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_module_settings"
-        android:name="com.armpits.nice.fragments.module_settings.ModuleSettingsFragment"
+        android:name="com.armpits.nice.fragments.ModuleSettingsFragment"
         android:label="@string/bottom_navigation_module_settings"
         tools:layout="@layout/fragment_module_settings" />
 
     <fragment
         android:id="@+id/navigation_logs"
-        android:name="com.armpits.nice.fragments.logs.LogsFragment"
+        android:name="com.armpits.nice.fragments.LogsFragment"
         android:label="@string/bottom_navigation_logs"
         tools:layout="@layout/fragment_logs" />
 
     <fragment
         android:id="@+id/navigation_global_settings"
-        android:name="com.armpits.nice.fragments.global_settings.GlobalSettingsFragment"
+        android:name="com.armpits.nice.fragments.GlobalSettingsFragment"
         android:label="@string/bottom_navigation_global_settings"
         tools:layout="@layout/fragment_global_settings" />
 </navigation>
