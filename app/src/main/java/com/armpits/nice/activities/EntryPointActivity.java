@@ -16,7 +16,7 @@ public class EntryPointActivity extends AppCompatActivity {
         Intent startAppIntent;
 
         // if the user is authenticated, go to the main activity, login otherwise
-        if (SharedPreferencesManager.get(Const.SP_LOGGED_IN, this) != null)
+        if (!SharedPreferencesManager.get(Const.SP_LOGGED_IN, this).equals(Const.SP_ERROR))
             startAppIntent = new Intent(this, MainActivity.class);
         else
             startAppIntent = new Intent(this, LoginActivity.class);

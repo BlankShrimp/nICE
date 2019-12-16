@@ -36,8 +36,7 @@ public class LoginActivity extends AppCompatActivity {
 
             SharedPreferencesManager.set(Const.SP_USERNAME, username, LoginActivity.this);
             SharedPreferencesManager.set(Const.SP_PASSWORD, password, LoginActivity.this);
-            SharedPreferencesManager.set(Const.SP_LOGGED_IN,
-                    Const.SP_LOGGED_IN_TRUE, LoginActivity.this);
+            SharedPreferencesManager.set(Const.SP_LOGGED_IN, "true", LoginActivity.this);
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
         });
     }
