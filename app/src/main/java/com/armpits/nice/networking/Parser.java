@@ -114,6 +114,16 @@ public class Parser {
         networkingHandler.download(module, parent, filename, url, listener);
     }
 
+    public static Date parseDate(String dateString) {
+        SimpleDateFormat ft = new SimpleDateFormat("E, dd MMMM yyyy, hh:mm", Locale.US);
+        Date date = new Date();
+        try {
+            date = ft.parse(dateString);
+        } catch (ParseException e) {
+        }
+        return date;
+    }
+
     //new Thread(() -> {
     //    Parser.download("CSE305", "Presentation",
     //            "https://ice.xjtlu.edu.cn/pluginfile.php/8714/mod_resource/content/3/Designspec%20report%20-%20sample%203.pdf",

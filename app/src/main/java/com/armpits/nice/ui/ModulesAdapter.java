@@ -91,6 +91,19 @@ public class ModulesAdapter extends RecyclerView.Adapter<ModulesAdapter.MyViewHo
         holder.chkCalendar.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (!buttonView.isPressed()) return;
             // check & request permission
+            if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.READ_CALENDAR)
+                    != PackageManager.PERMISSION_GRANTED) {
+                if(ActivityCompat.shouldShowRequestPermissionRationale((Activity) mContext,Manifest.permission.READ_CALENDAR)){
+                    new AlertDialog.Builder(mContext)
+                            .setTitle(R.string.title_calendar)
+                            .setMessage(R.string.description_calendar)
+                            .setPositiveButton(R.string.confirm_button, (dialog, which) ->
+                                    ActivityCompat.requestPermissions((Activity) mContext,new String[]{Manifest.permission.READ_CALENDAR}, 1))
+                            .show();
+                }else{
+                    ActivityCompat.requestPermissions((Activity) mContext,new String[]{Manifest.permission.READ_CALENDAR},1);
+                }
+            }
             if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_CALENDAR)
                     != PackageManager.PERMISSION_GRANTED) {
                 if(ActivityCompat.shouldShowRequestPermissionRationale((Activity) mContext,Manifest.permission.WRITE_CALENDAR)){
