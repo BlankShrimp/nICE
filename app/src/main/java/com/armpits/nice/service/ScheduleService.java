@@ -14,6 +14,7 @@ import androidx.lifecycle.LiveData;
 import com.armpits.nice.calendar.CalendarHandler;
 import com.armpits.nice.db.NiceDatabase;
 import com.armpits.nice.models.Deadline;
+import com.armpits.nice.models.Log;
 import com.armpits.nice.models.Material;
 import com.armpits.nice.models.Module;
 import com.armpits.nice.networking.Networking;
@@ -147,10 +148,15 @@ public class ScheduleService extends LifecycleService {
                         updateDueList.add(deadline);
                     }
 
-                    for (Deadline deadline : updateDueList) {
+                    for (Deadline deadline: updateDueList) {
                         NiceDatabase.update(deadline);
-                        if (!deadline.shouldNotify)
+                        if (!deadline.shouldNotify) {
                             addingDueList.remove(deadline);
+                            NiceDatabase.insert(new Log(new Date(), deadline.title + "(" +
+                                    deadline.date + "): Succeeded. "));
+                        } else
+                            NiceDatabase.insert(new Log(new Date(), deadline.title + "(" +
+                                    deadline.date + "): Failed. "));
                     }
                     updateDueList.clear();
                 }
@@ -214,8 +220,13 @@ public class ScheduleService extends LifecycleService {
 
                     for (Material material : updateList) {
                         NiceDatabase.update(material);
-                        if (!material.shouldDownload)
+                        if (!material.shouldDownload) {
                             downloadList.remove(material);
+                            NiceDatabase.insert(new Log(new Date(), material.filename + "(" +
+                                    material.description + "): Succeeded. "));
+                        } else
+                            NiceDatabase.insert(new Log(new Date(), material.filename + "(" +
+                                    material.description + "): Failed. "));
                     }
                     updateList.clear();
                 }
