@@ -121,6 +121,7 @@ public class CalendarHandler {
         values.put(CalendarContract.Reminders.MINUTES, 24 * 60); // remind 1 day before ddl
         values.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
         Uri uri = context.getContentResolver().insert(Uri.parse(CALENDAR_REMINDER_URI), values);
+        System.out.println(uri.toString());
         if(uri == null) {
             return;
         }

@@ -191,7 +191,7 @@ public class Networking {
                 try {
                     is = response.body().byteStream();
                     long total = response.body().contentLength();
-                    File file = new File(savePath, fileName);
+                    File file = new File(savePath, getNameFromUrl(URLDecoder.decode(url, "UTF-8")));
                     fos = new FileOutputStream(file);
                     long sum = 0;
                     while ((len = is.read(buf)) != -1) {

@@ -5,12 +5,12 @@ import androidx.room.Entity;
 
 import java.util.Date;
 
-@Entity(primaryKeys = {"moduleCode", "date"})
+@Entity(primaryKeys = {"moduleCode", "date", "title"})
 public class Deadline {
     @NonNull public final String moduleCode;
     @NonNull public Date date;
     public String moduleTitle;
-    public String title;
+    @NonNull public String title;
     public boolean shouldNotify;
 
     public Deadline(String moduleCode, String moduleTitle, Date date, String title,
