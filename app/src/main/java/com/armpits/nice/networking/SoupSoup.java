@@ -54,7 +54,7 @@ public class SoupSoup {
                     assembled[3] = e.selectFirst("span.resourcelinkdetails").text().split("Modified ")[0];
                     assembled[4] = parent;
                 } else if (element1
-                        .selectFirst("img[src=https://ice.xjtlu.edu.cn/theme/image.php/boost_campus/assign/1576474672/icon]")
+                        .selectFirst("img[src=https://ice.xjtlu.edu.cn/theme/image.php/boost_campus/assign/1576552538/icon]")
                         != null) {
                     assembled[0] = "Submission";
                     assembled[2] = element1.attr("href");
