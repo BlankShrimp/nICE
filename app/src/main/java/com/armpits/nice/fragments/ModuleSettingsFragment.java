@@ -1,5 +1,6 @@
 package com.armpits.nice.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import com.armpits.nice.R;
 import com.armpits.nice.db.NiceDatabase;
 import com.armpits.nice.models.Module;
 import com.armpits.nice.networking.Parser;
+import com.armpits.nice.service.ScheduleService;
 import com.armpits.nice.ui.ModulesAdapter;
 import com.armpits.nice.utils.Const;
 import com.armpits.nice.utils.SharedPreferencesManager;
@@ -55,6 +57,8 @@ public class ModuleSettingsFragment extends Fragment {
             adapter.notifyDataSetChanged();
         });
 
+        Intent intent = new Intent(mContainer.getContext(), ScheduleService.class);
+        getActivity().startService(intent);
         return mContainer;
     }
 

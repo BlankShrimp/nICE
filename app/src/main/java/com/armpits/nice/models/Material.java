@@ -26,5 +26,11 @@ public class Material {
         this.description = description;
         this.dateDownloaded = dateDownloaded;
         this.shouldDownload = shouldDownload;
+
+    }
+    public boolean equalsTo(Material m) {
+        return moduleCode.equals(m.moduleCode)
+                && filename.equals(m.filename)
+                && parentPath.equals((m.parentPath));
     }
 }
