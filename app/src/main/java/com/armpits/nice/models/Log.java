@@ -8,7 +8,9 @@ import java.util.Date;
 
 @Entity
 public class Log {
-    @PrimaryKey @NonNull public Date date;
+    @PrimaryKey(autoGenerate = true) @NonNull
+    public int id;
+    public Date date;
     public String message;
 
     public Log(Date date, String message) {

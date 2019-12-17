@@ -1,10 +1,10 @@
 package com.armpits.nice.service;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Looper;
 
 import androidx.core.content.ContextCompat;
@@ -14,7 +14,6 @@ import androidx.lifecycle.LiveData;
 import com.armpits.nice.calendar.CalendarHandler;
 import com.armpits.nice.db.NiceDatabase;
 import com.armpits.nice.models.Deadline;
-import com.armpits.nice.models.Log;
 import com.armpits.nice.models.Material;
 import com.armpits.nice.models.Module;
 import com.armpits.nice.networking.Networking;
@@ -42,6 +41,8 @@ public class ScheduleService extends LifecycleService {
     private String username;
     private String password;
 
+    private Thread thread;
+
     public ScheduleService() {
     }
 
@@ -59,144 +60,125 @@ public class ScheduleService extends LifecycleService {
         modules = new ArrayList<>();
         Handler handler = new Handler(Looper.getMainLooper());
         modulesLiveData = NiceDatabase.getAllModules();
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                modulesLiveData.observeForever(newModules -> {
-                    modules.clear();
-                    modules.addAll(newModules);
-                });
-            }
-        });
+        handler.post(() -> modulesLiveData.observeForever(newModules -> {
+            modules.clear();
+            modules.addAll(newModules);
+        }));
 
         materials = new ArrayList<>();
         downloadList = new ArrayList<>();
         updateList = new ArrayList<>();
         materialsLiveData = NiceDatabase.getAllMaterials();
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                materialsLiveData.observeForever(newMaterials -> {
-                    materials.clear();
-                    materials.addAll(newMaterials);
-                });
-            }
-        });
+        handler.post(() -> materialsLiveData.observeForever(newMaterials -> {
+            materials.clear();
+            materials.addAll(newMaterials);
+        }));
 
         deadlines = new ArrayList<>();
         addingDueList = new ArrayList<>();
         updateDueList = new ArrayList<>();
         deadlineLiveData = NiceDatabase.getAllDeadlines();
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                deadlineLiveData.observeForever(newMaterials -> {
-                    deadlines.clear();
-                    deadlines.addAll(newMaterials);
-                });
-            }
-        });
+        handler.post(() -> deadlineLiveData.observeForever(newMaterials -> {
+            deadlines.clear();
+            deadlines.addAll(newMaterials);
+        }));
+
+        if (thread == null) {
+            thread = new Thread(new ServiceThread(this));
+            thread.start();
+        } else
+            thread.run();
 
 
-        new Thread(() -> {
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-            }
+        return super.onStartCommand(intent, flags, statrtID);
+    }
 
-            // Update dues
-            if (!modules.isEmpty()) {
-                for (Module module: modules) {
-                    if (!module.addDDLsToCalendar)
-                        continue;
-                    String id = module.code;
-                    List<String[]> dueList = Parser.getDueList(id, username, password);
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e) {
-                    }
-                    for (String[] due: dueList) {
-                        Boolean added = false;
-                        Deadline deadline1 = new Deadline(id, module.title, Parser.parseDate(due[2]),
-                                due[0], true);
-                        if (deadlines.isEmpty()) {
-                            addingDueList.add(deadline1);
-                            added = true;
-                        }
-                        for (Deadline deadline2: deadlines) {
-                            if (deadline1.equalsTo(deadline2)) {
-                                if (deadline2.shouldNotify)
-                                    addingDueList.add(deadline1);
-                                added = true;
-                                break;
+    private class ServiceThread implements Runnable {
+        private Context context;
+
+        ServiceThread(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        public void run() {
+            while(true) {
+                if (Thread.interrupted())
+                    return;
+
+                // TODO: Update dues
+                if (!modules.isEmpty()) {
+                    for (Module module : modules) {
+                        if (!module.addDDLsToCalendar)
+                            continue;
+                        String id = module.code;
+                        List<String[]> dueList = Parser.getDueList(id, username, password);
+                        sleep(2000);
+
+                        for (String[] due : dueList) {
+                            Deadline deadline1 = new Deadline(id, module.title, Parser.parseDate(due[2]),
+                                    due[0], true);
+                            if (deadlines.isEmpty())
+                                addingDueList.add(deadline1);
+                            for (Deadline deadline2 : deadlines) {
+                                if (deadline1.equalsTo(deadline2)) {
+                                    if (deadline2.shouldNotify)
+                                        addingDueList.add(deadline2);
+                                } else
+                                    addingDueList.add(deadline2);
                             }
                         }
-                        if (!added)
-                            addingDueList.add(deadline1);
                     }
-                }
 
-                //Add to calendar
-                for (Deadline deadline: addingDueList) {
-                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR)
-                            != PackageManager.PERMISSION_GRANTED)
-                        break;
-                    System.out.println(deadline.date);
-                    CalendarHandler.addCalendarEvent(this, deadline.title, deadline.moduleTitle, deadline.date.getTime());
-                    deadline.shouldNotify = false;
-                    updateDueList.add(deadline);
-                }
+                    //Add to calendar
+                    for (Deadline deadline : addingDueList) {
+                        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR)
+                                != PackageManager.PERMISSION_GRANTED)
+                            break;
+                        System.out.println(deadline.date);
+                        CalendarHandler.addCalendarEvent(context, deadline.title, deadline.moduleTitle, deadline.date.getTime());
+                        deadline.shouldNotify = false;
 
-                for (Deadline deadline: updateDueList) {
-                    NiceDatabase.update(deadline);
-                    if (!deadline.shouldNotify) {
-                        addingDueList.remove(deadline);
-                        NiceDatabase.insert(new Log(new Date(), deadline.title + "(" +
-                                deadline.date + "): Succeeded. "));
-                    } else
-                        NiceDatabase.insert(new Log(new Date(), deadline.title + "(" +
-                                deadline.date + "): Failed. "));
-                }
-                updateDueList.clear();
-            }
-
-            // Update file list & Download files
-            if (!modules.isEmpty()) {
-                for (Module module : modules) {
-                    if (!module.enableDownloads)
-                        continue;
-                    String id = module.code;
-                    List<String[]> fileList = Parser.getFileList(id, username, password);
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e) {
                     }
-                    for (String[] material : fileList) {
-                        Boolean added = false;
-                        Material material1 = new Material(module.title, id, material[0], material[3],
-                                material[1], material[2], new Date(), true);
-                        if (materials.isEmpty()) {
-                            downloadList.add(material1);
-                            added = true;
-                        }
-                        for (Material material2 : materials) {
-                            if (material1.equalsTo(material2)) {
-                                if (material2.shouldDownload)
-                                    downloadList.add(material1);
-                                added = true;
-                                break;
+
+                    for (Deadline deadline : updateDueList) {
+                        NiceDatabase.update(deadline);
+                        if (!deadline.shouldNotify)
+                            addingDueList.remove(deadline);
+                    }
+                    updateDueList.clear();
+                }
+
+                // Update file list & Download files
+                if (!modules.isEmpty()) {
+                    for (Module module : modules) {
+                        if (!module.enableDownloads)
+                            continue;
+                        String id = module.code;
+                        List<String[]> fileList = Parser.getFileList(id, username, password);
+
+                        sleep(2000);
+
+                        for (String[] material : fileList) {
+                            Material material1 = new Material(module.title, id, material[0], material[3],
+                                    material[1], material[2], new Date(), true);
+                            if (materials.isEmpty())
+                                downloadList.add(material1);
+                            for (Material material2 : materials) {
+                                if (material1.equalsTo(material2)) {
+                                    if (material2.shouldDownload)
+                                        downloadList.add(material2);
+                                } else
+                                    downloadList.add(material2);
                             }
                         }
-                        if (!added)
-                            downloadList.add(material1);
                     }
-                }
 
-                //Download
-                for (Material material : downloadList) {
-                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                            != PackageManager.PERMISSION_GRANTED)
-                        break;
+                    //Download
+                    for (Material material : downloadList) {
+                        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                != PackageManager.PERMISSION_GRANTED)
+                            break;
                         Parser.download(material.moduleTitle, material.parentPath, material.filename,
                                 material.url, username, password, new Networking.OnDownloadListener() {
                                     @Override
@@ -216,30 +198,51 @@ public class ScheduleService extends LifecycleService {
                                     }
                                 });
 
-                }
+                    }
 
-                for (Material material : updateList) {
-                    NiceDatabase.update(material);
-                    if (!material.shouldDownload) {
-                        downloadList.remove(material);
-                        NiceDatabase.insert(new Log(new Date(), material.filename + "(" +
-                                material.description + "): Succeeded. "));
-                    } else
-                        NiceDatabase.insert(new Log(new Date(), material.filename + "(" +
-                                material.description + "): Failed. "));
+                    for (Material material : updateList) {
+                        NiceDatabase.update(material);
+                        if (!material.shouldDownload)
+                            downloadList.remove(material);
+                    }
+                    updateList.clear();
                 }
-                updateList.clear();
+                sleepUntilNextUpdate();
             }
-        }).start();
+        }
 
+        private void sleepUntilNextUpdate() {
+            String sleepTime = SharedPreferencesManager.get(Const.SP_UPDATE_FREQUENCY, context);
+            final long HOUR = 1000 * 60 * 60;
+            long time;
 
-        return super.onStartCommand(intent, flags, statrtID);
-    }
+            switch (sleepTime) {
+                case "30 minutes":
+                    time = HOUR / 2;
+                    break;
+                case "hour":
+                    time = HOUR;
+                    break;
+                case "8 hours":
+                    time = HOUR * 8;
+                    break;
+                case "day":
+                    time = HOUR * 24;
+                    break;
+                case "week":
+                    time = HOUR * 24 * 7;
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + sleepTime);
+            }
 
-    @Override
-    public IBinder onBind(Intent intent) {
-        super.onBind(intent);
-        // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
+            sleep(time);
+        }
+
+        private void sleep(long millis) {
+            try {
+                Thread.sleep(millis);
+            } catch (InterruptedException ignore) {}
+        }
     }
 }

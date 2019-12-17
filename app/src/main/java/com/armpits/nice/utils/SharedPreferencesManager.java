@@ -14,6 +14,6 @@ public class SharedPreferencesManager {
 
     public static String get(String key, Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getString(key, null);
+        return prefs.getString(key, Const.SP_ERROR);
     }
 }

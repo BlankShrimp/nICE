@@ -8,6 +8,7 @@ import com.armpits.nice.models.Deadline;
 import com.armpits.nice.models.Log;
 import com.armpits.nice.models.Module;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -20,5 +21,9 @@ public class FragmentsViewModel extends ViewModel {
         modules = NiceDatabase.getAllModules();
         deadlines = NiceDatabase.getAllDeadlines();
         logs = NiceDatabase.getAllLogs();
+    }
+
+    void addLog(String message) {
+        NiceDatabase.insert(new Log(new Date(), message));
     }
 }
