@@ -29,7 +29,8 @@ import java.util.List;
 
 public class ModuleSettingsFragment extends Fragment {
     private View mContainer;
-    private RecyclerView recyclerView;
+
+    private FragmentsViewModel viewModel;
     private ModulesAdapter adapter;
     private LiveData<List<Module>> modulesLiveData;
     private List<Module> modules;
@@ -39,6 +40,7 @@ public class ModuleSettingsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        viewModel = ViewModelProviders.of(this).get(FragmentsViewModel.class);
         mContainer = inflater.inflate(R.layout.fragment_module_settings, container, false);
         recyclerView = mContainer.findViewById(R.id.recycler_view_modules);
 
@@ -84,6 +86,8 @@ public class ModuleSettingsFragment extends Fragment {
                 for (String[] moduleInfo : onlineModules)
                     NiceDatabase.insert(new Module(moduleInfo[0], moduleInfo[1], new Date(),
                             false, false, false, false));
+                    viewModel.addLog("New module found on ICE: " + moduleInfo[0]);
+                }
             }
         }).start();
     }

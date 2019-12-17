@@ -37,9 +37,6 @@ public class GlobalSettingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_global_settings, container, false);
-
-        // setup the data
-        modules = new ArrayList<>();
         viewModel = ViewModelProviders.of(this).get(FragmentsViewModel.class);
         viewModel.modules.observe(this, newModules -> {
             modules.clear();
@@ -53,7 +50,7 @@ public class GlobalSettingsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // TODO: Profile picture, logout button, force update button
+        // TODO: Profile picture, force update button
 
         // EMAIL
         TextView txtEmail = root.findViewById(R.id.txtEmail);
@@ -77,6 +74,7 @@ public class GlobalSettingsFragment extends Fragment {
                 SharedPreferencesManager.set(
                         Const.SP_UPDATE_FREQUENCY, Const.UPDATE_FREQUENCIES.get(i),
                         getActivity());
+                viewModel.addLog("Changed update frequency to " + Const.UPDATE_FREQUENCIES.get(i));
             }
 
             public void onNothingSelected(AdapterView<?> adapterView) {}
@@ -86,6 +84,7 @@ public class GlobalSettingsFragment extends Fragment {
         Button btnLogout = root.findViewById(R.id.btnLogout);
         btnLogout.setOnClickListener(v -> {
             SharedPreferencesManager.set(Const.SP_LOGGED_IN, "false", getActivity());
+            viewModel.addLog(SharedPreferencesManager.get(Const.SP_USERNAME, getContext())+" logged out");
             startActivity(new Intent(getActivity(), EntryPointActivity.class));
         });
     }
