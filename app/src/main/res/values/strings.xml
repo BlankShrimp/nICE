@@ -37,4 +37,11 @@
     <string name="profile_description">Profile image received from ICE</string>
     <string name="button_logout">Logout</string>
     <string name="auto_update_message">Auto update every</string>
+
+    <!-- NOTIFICATIONS -->
+    <string name="notif_ch_1_dl">Channel 1 Downloads</string>
+    <string name="notif_ch_1_desc">Notifications for nICE downloads.</string>
+    <string name="notif_ch_2_ddl">Channel 2 Deadlines</string>
+    <string name="notif_ch_2_desc">Notifications for nICE deadlines.</string>
+
 </resources>

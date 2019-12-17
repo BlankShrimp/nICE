@@ -9,13 +9,21 @@ import java.util.Date;
 public class Deadline {
     @NonNull public final String moduleCode;
     @NonNull public Date date;
-    public Date dateAddedToCalendar;
+    public String moduleTitle;
+    public String title;
     public boolean shouldNotify;
 
-    public Deadline(String moduleCode, Date date, Date dateAddedToCalendar, boolean shouldNotify) {
+    public Deadline(String moduleCode, String moduleTitle, Date date, String title,
+                    boolean shouldNotify) {
         this.moduleCode = moduleCode;
+        this.moduleTitle = moduleTitle;
         this.date = date;
-        this.dateAddedToCalendar = dateAddedToCalendar;
+        this.title = title;
         this.shouldNotify = shouldNotify;
+    }
+
+    public boolean equalsTo(Deadline m) {
+        return moduleCode.equals(m.moduleCode)
+                && date.equals(m.date);
     }
 }

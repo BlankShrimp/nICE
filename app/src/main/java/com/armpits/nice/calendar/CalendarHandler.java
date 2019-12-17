@@ -19,7 +19,7 @@ public class CalendarHandler {
 
     private static final String CALENDAR_USER = "nICE";
     private static final String CALENDAR_ACCOUNT = "nice@armpits.com";
-    private static final String CALENDAR_ACC_TYPE = "com.armpits";
+    private static final String CALENDAR_ACC_TYPE = CalendarContract.ACCOUNT_TYPE_LOCAL;
 
     private static int checkAndAddCalendarAccount(Context context) {
         int oldId = checkCalendarAccount(context);

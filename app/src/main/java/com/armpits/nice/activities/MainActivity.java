@@ -5,6 +5,7 @@ import android.os.StrictMode;
 
 import com.armpits.nice.R;
 import com.armpits.nice.db.NiceDatabase;
+import com.armpits.nice.notifications.Notify;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,5 +35,10 @@ import androidx.navigation.ui.NavigationUI;
         // insert your download here
         // instantiate the database
         NiceDatabase db = NiceDatabase.getDatabase(this);
+
+        // Should create notification channels as soon as app starts.
+        // It's safe to call this repeatedly because creating an existing notification channel
+        // performs no operation.
+        Notify.createNotificationChannels(this);
     }
 }

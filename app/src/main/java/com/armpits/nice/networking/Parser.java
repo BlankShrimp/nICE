@@ -1,6 +1,10 @@
 package com.armpits.nice.networking;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import okhttp3.OkHttpClient;
 
@@ -102,12 +106,22 @@ public class Parser {
      * @param passwd password.
      * @param listener OnDownloadListener.
      */
-    public static void download(String module, String parent, String url, String account,
+    public static void download(String module, String parent, String filename, String url, String account,
                                 String passwd, Networking.OnDownloadListener listener) {
         Networking networkingHandler = new Networking();
         String token = networkingHandler.fetchToken();
         networkingHandler.login(token, account, passwd);
-        networkingHandler.download(module, parent, url, listener);
+        networkingHandler.download(module, parent, filename, url, listener);
+    }
+
+    public static Date parseDate(String dateString) {
+        SimpleDateFormat ft = new SimpleDateFormat("E, dd MMMM yyyy, hh:mm", Locale.US);
+        Date date = new Date();
+        try {
+            date = ft.parse(dateString);
+        } catch (ParseException e) {
+        }
+        return date;
     }
 
     //new Thread(() -> {
