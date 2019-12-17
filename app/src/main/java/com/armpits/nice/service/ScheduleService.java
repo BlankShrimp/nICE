@@ -103,7 +103,7 @@ public class ScheduleService extends LifecycleService {
             } catch (InterruptedException e) {
             }
 
-            // TODO: Update dues
+            // Update dues
             if (!modules.isEmpty()) {
                 for (Module module: modules) {
                     if (!module.addDDLsToCalendar)
@@ -115,17 +115,23 @@ public class ScheduleService extends LifecycleService {
                     } catch (InterruptedException e) {
                     }
                     for (String[] due: dueList) {
+                        Boolean added = false;
                         Deadline deadline1 = new Deadline(id, module.title, Parser.parseDate(due[2]),
                                 due[0], true);
-                        if (deadlines.isEmpty())
+                        if (deadlines.isEmpty()) {
                             addingDueList.add(deadline1);
+                            added = true;
+                        }
                         for (Deadline deadline2: deadlines) {
                             if (deadline1.equalsTo(deadline2)) {
                                 if (deadline2.shouldNotify)
-                                    addingDueList.add(deadline2);
-                            } else
-                                addingDueList.add(deadline2);
+                                    addingDueList.add(deadline1);
+                                added = true;
+                                break;
+                            }
                         }
+                        if (!added)
+                            addingDueList.add(deadline1);
                     }
                 }
 
@@ -160,17 +166,23 @@ public class ScheduleService extends LifecycleService {
                     } catch (InterruptedException e) {
                     }
                     for (String[] material : fileList) {
+                        Boolean added = false;
                         Material material1 = new Material(module.title, id, material[0], material[3],
                                 material[1], material[2], new Date(), true);
-                        if (materials.isEmpty())
+                        if (materials.isEmpty()) {
                             downloadList.add(material1);
+                            added = true;
+                        }
                         for (Material material2 : materials) {
                             if (material1.equalsTo(material2)) {
                                 if (material2.shouldDownload)
-                                    downloadList.add(material2);
-                            } else
-                                downloadList.add(material2);
+                                    downloadList.add(material1);
+                                added = true;
+                                break;
+                            }
                         }
+                        if (!added)
+                            downloadList.add(material1);
                     }
                 }
 
