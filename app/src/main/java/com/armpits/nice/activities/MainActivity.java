@@ -1,11 +1,11 @@
 package com.armpits.nice.activities;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.StrictMode;
 
 import com.armpits.nice.R;
 import com.armpits.nice.db.NiceDatabase;
+import com.armpits.nice.notifications.Notify;
 import com.armpits.nice.utils.Const;
 import com.armpits.nice.utils.SharedPreferencesManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -37,6 +37,11 @@ import androidx.navigation.ui.NavigationUI;
         // insert your download here
         // instantiate the database
         NiceDatabase db = NiceDatabase.getDatabase(this);
+
+        // Should create notification channels as soon as app starts.
+        // It's safe to call this repeatedly because creating an existing notification channel
+        // performs no operation.
+        Notify.createNotificationChannels(this);
 
         if (SharedPreferencesManager.get(Const.SP_UPDATE_FREQUENCY, this).equals(Const.SP_ERROR))
             SharedPreferencesManager.set(Const.SP_UPDATE_FREQUENCY, "hour", this);

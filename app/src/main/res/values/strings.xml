@@ -22,19 +22,26 @@
 
     <!--  PERMISSIONS  -->
     <string name="title_file">Request WRITE_EXTERNAL_STORAGE</string>
-    <string name="title_calendar">Request READ/WRITE_CALENDAR</string>
+    <string name="title_calendar">Request WRITE_CALENDAR</string>
     <string name="confirm_button">Confirm</string>
     <string name="description_file">
         WRITE_EXTERNAL_STORAGE is required with this feature. If you confirm not
         to grant this permission, you can still use this app but cannot
-        download files automatically until you grant this permission manually.
+        download files automatically until you grant this permission manually. 
     </string>
     <string name="description_calendar">
-        READ/WRITE_CALENDAR is required with this feature. If you confirm not
+        WRITE_CALENDAR is required with this feature. If you confirm not
         to grant this permission, you can still use this app but cannot
         add DDL to calendar until you grant this permission manually.
     </string>
     <string name="profile_description">Profile image received from ICE</string>
     <string name="button_logout">Logout</string>
     <string name="auto_update_message">Auto update every</string>
+
+    <!-- NOTIFICATIONS -->
+    <string name="notif_ch_1_dl">Channel 1 Downloads</string>
+    <string name="notif_ch_1_desc">Notifications for nICE downloads.</string>
+    <string name="notif_ch_2_ddl">Channel 2 Deadlines</string>
+    <string name="notif_ch_2_desc">Notifications for nICE deadlines.</string>
+
 </resources>
