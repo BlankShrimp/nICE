@@ -105,7 +105,7 @@ public class ScheduleService extends LifecycleService {
 
         @Override
         public void run() {
-            while(true) {
+            while (true) {
                 if (Thread.interrupted())
                     return;
 
@@ -122,7 +122,7 @@ public class ScheduleService extends LifecycleService {
                         List<String[]> dueList = Parser.getDueList(id, username, password);
                         sleep(2000);
 
-                        for (String[] due: dueList) {
+                        for (String[] due : dueList) {
                             System.out.println("flag1");
                             Boolean added = false;
                             Deadline deadline1 = new Deadline(id, module.title, Parser.parseDate(due[2]),
@@ -131,7 +131,7 @@ public class ScheduleService extends LifecycleService {
                                 addingDueList.add(deadline1);
                                 added = true;
                             }
-                            for (Deadline deadline2: deadlines) {
+                            for (Deadline deadline2 : deadlines) {
                                 if (deadline1.equalsTo(deadline2)) {
                                     if (deadline2.shouldNotify)
                                         addingDueList.add(deadline1);
@@ -145,7 +145,7 @@ public class ScheduleService extends LifecycleService {
                         }
                     }
 
-                    //Add to calendar
+                    // Add to calendar
                     for (Deadline deadline : addingDueList) {
                         if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR)
                                 != PackageManager.PERMISSION_GRANTED)
@@ -156,19 +156,29 @@ public class ScheduleService extends LifecycleService {
                         updateDueList.add(deadline);
                     }
 
-                    for (Deadline deadline: updateDueList) {
-                        NiceDatabase.update(deadline);
+                    // Update memory data
+                    for (Deadline deadline : updateDueList) {
                         if (!deadline.shouldNotify) {
+                            NiceDatabase.update(deadline);
                             addingDueList.remove(deadline);
+                            boolean added = false;
+                            for (Deadline existedDDL : deadlines) {
+                                if (existedDDL.equalsTo(deadline)) {
+                                    existedDDL.shouldNotify = false;
+                                    added = true;
+                                }
+                            }
+                            if (!added)
+                                deadlines.add(deadline);
                             NiceDatabase.insert(new Log(new Date(), deadline.title + "(" +
                                     deadline.date + "): Succeeded. "));
                             Notify.displayNotification(context, 2, false, "New deadline",
-                                    deadline.title +": " + deadline.date.toString());
+                                    deadline.title + ": " + deadline.date.toString());
                         } else {
                             NiceDatabase.insert(new Log(new Date(), deadline.title + "(" +
                                     deadline.date + "): Failed. "));
                             Notify.displayNotification(context, 2, false, "Deadline detected",
-                                    "Failed to add: "+deadline.title +": " + deadline.date.toString());
+                                    "Failed to add: " + deadline.title + ": " + deadline.date.toString());
                         }
                     }
                     updateDueList.clear();
@@ -233,16 +243,26 @@ public class ScheduleService extends LifecycleService {
                                     public void onDownloadFailed() {
                                         updateList.add(material);
                                         Notify.displayNotification(context, 1, false, "File detected",
-                                                "Failed to download: "+ material.moduleTitle + ": " + material.filename);
+                                                "Failed to download: " + material.moduleTitle + ": " + material.filename);
                                     }
                                 });
 
                     }
 
+                    // Update memory data
                     for (Material material : updateList) {
-                        NiceDatabase.update(material);
                         if (!material.shouldDownload) {
+                            NiceDatabase.update(material);
                             downloadList.remove(material);
+                            boolean added = false;
+                            for (Material existedMaterial : materials) {
+                                if (existedMaterial.equalsTo(material)) {
+                                    existedMaterial.shouldDownload = false;
+                                    added = true;
+                                }
+                            }
+                            if (!added)
+                                materials.add(material);
                             NiceDatabase.insert(new Log(new Date(), material.filename + "(" +
                                     material.description + "): Succeeded. "));
                         } else {
@@ -288,7 +308,8 @@ public class ScheduleService extends LifecycleService {
         private void sleep(long millis) {
             try {
                 Thread.sleep(millis);
-            } catch (InterruptedException ignore) {}
+            } catch (InterruptedException ignore) {
+            }
         }
     }
 }
