@@ -199,7 +199,7 @@ public class ScheduleService extends LifecycleService {
                         sleep(2000);
 
                         for (String[] material : fileList) {
-                            Boolean added = false;
+                            boolean added = false;
                             Material material1 = new Material(module.title, id, material[0], material[3],
                                     material[1], material[2], new Date(), true);
                             if (materials.isEmpty()) {
